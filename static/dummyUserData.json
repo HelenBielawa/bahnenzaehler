@@ -1,0 +1,16 @@
+[
+    {"datum": "2025-05-01", "bahnen": 22},
+    {"datum": "2025-05-02", "bahnen": 0},
+    {"datum": "2025-05-03", "bahnen": 15},
+    {"datum": "2025-05-04", "bahnen": 0},
+    {"datum": "2025-05-05", "bahnen": 0},
+    {"datum": "2025-05-06", "bahnen": 18},
+    {"datum": "2025-05-07", "bahnen": 0},
+    {"datum": "2025-05-08", "bahnen": 0},
+    {"datum": "2025-05-09", "bahnen": 20},
+    {"datum": "2025-05-10", "bahnen": 0},
+    {"datum": "2025-05-11", "bahnen": 0},
+    {"datum": "2025-05-12", "bahnen": 25},
+    {"datum": "2025-05-13", "bahnen": 0},
+    {"datum": "2025-05-14", "bahnen": 10}
+]
