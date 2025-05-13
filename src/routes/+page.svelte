@@ -38,7 +38,7 @@
     <p class="text-lg m-8">
         Die typografische Arbeit im 50-Meter-Becken beschäftigt sich mit dem eigenen Standort und dem gedanklichen in die Ferne Schweifen. In der Mitte des Beckens das süße Versprechen: Sie haben ihr Ziel erreicht. Die gleichnamige Arbeit wurde von der Künstlerin <a href="https://www.jennagesse.de/">Jenna Gesse</a> für die Aktion freischwimmen - Kunst im Bad entwickelt und mit viel ehrenamtlichem Engagement umgesetzt.
 
-Wir freuen uns sehr, dass Kunst im Bad auch in 2025 wieder bei uns im Schlossbad Erwitte vertreten ist und bedanken uns recht herzlich bei allen beteiligten Künstlern. Weitere Infos gibt es bei freischwimmen - Kunst im Bad oder bei Instagramm.
+Wir freuen uns sehr, dass Kunst im Bad auch in 2025 wieder bei uns im Schlossbad Erwitte vertreten ist und bedanken uns recht herzlich bei allen beteiligten Künstlern. Weitere Infos gibt es bei freischwimmen - Kunst im Bad oder bei Instagram.
     </p>
 
     <div class="w-full flex flex-col h-10 relative  text-blue-900 mb-2">

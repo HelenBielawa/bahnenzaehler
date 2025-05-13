@@ -16,12 +16,11 @@
             const response = await fetch(
                 `https://www.schlossbad-erwitte.de/apps/bahnen/php/getUser.php?name=${loginEmail}&passwd=${loginPassword}`, {
                 method: 'GET',
-                mode: 'no-cors',
                 headers: {
                     'Content-Type': 'application/json',
                 }
             });
-
+            console.log('Response:', response);
             if (!response.ok) {
                 throw new Error('Login failed');
             }
@@ -39,19 +38,13 @@
     }
 
     async function handleRegister() {
+        let lowerName = loginEmail.toLowerCase();
         try {
-            const response = await fetch('https://www.schlossbad-erwitte.de/apps/bahnen/php/createUser.php', {
-                method: 'POST',
-                mode: 'no-cors',
+            const response = await fetch('https://www.schlossbad-erwitte.de/apps/bahnen/php/createUserGet.php'+'name='+{loginEmail}+'lcname='+{lowerName}+'passwd='+{loginPassword}+'summe=0', {
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name: loginEmail,
-                    lcname: loginEmail.toLowerCase(),
-                    passwd: loginPassword,
-                    summe: 0
-                }),
+                }
             });
 
             if (!response.ok) {

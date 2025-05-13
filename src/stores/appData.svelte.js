@@ -2,7 +2,7 @@ class Data {
 
     userID = $state(0);
 
-    swimData = $state("");
+    swimData = $state();
 
 }
 
