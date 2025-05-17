@@ -33,9 +33,16 @@
         }
     }
     onMount(() => {
-        getBahnen(id);
-    });
+        getBahnen(id);       
 
+    });
+    $inspect("userid in my page", data.userID)
+    $effect(() => {
+        if (data.userID == 0 || data.userID == undefined) {
+            goto('/login');
+        }
+    });
+  
 </script>   
 
 
@@ -107,15 +114,5 @@
 
 
     </div>
-    <footer class="w-full mt-8 py-4 text-blue-900 text-center text-sm rounded-t">
-        <div class="flex flex-col md:flex-row justify-center items-center gap-2">
-            <button onclick={() => goto('/impressum')} class="hover:underline">
-                Impressum
-            </button>
-            <span class="hidden md:inline">|</span>
-            <a href="https://www.schlossbad-erwitte.de" target="_blank" rel="noopener noreferrer" class="hover:underline">
-                Zur Schlossbad-Website
-            </a>
-        </div>
-    </footer>
+
 </div>

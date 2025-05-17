@@ -9,8 +9,8 @@
 
     let challengeDestination = $derived(data.challengeData.destination);
     let challengeOrigin = "Erwitte";
-    let challengeLength = $derived(data.challengeData.bahnen * 50);
-    let currentDistance = $derived(bahnenSum * 50);
+    let challengeLength = $derived(data.challengeData.bahnen * 50/1000);
+    let currentDistance = $derived(bahnenSum * 50/1000);
     // Berechnung des Fortschritts in Prozent
     let progressPercentage = $derived((currentDistance / challengeLength) * 100);
     let missingDistance = $derived(challengeLength - currentDistance);

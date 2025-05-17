@@ -58,40 +58,41 @@
 
     $inspect("swimdata in input", data.swimData);
 </script>
-<div class="w-full flex items-center gap-2 text-blue-900">
+<div class="w-full flex flex-col gap-2 text-blue-900">
     <input
         type="date"
         bind:value={day}
-        class="border border-blue-400 rounded px-2 py-1 text-lg"
-
+        class="border border-blue-400 rounded px-2 py-1 max-w-80 text-lg w-full text-blue-900"
     />
-    <button 
-        onclick={decrement} 
-        disabled={value <= min} 
-        class="bg-blue-400 text-blue-900 hover:bg-blue-500 font-bold rounded px-2 py-1 text-lg disabled:cursor-not-allowed disabled:opacity-40"
-    >
-        -
-    </button>
-    <input
-        type="number"
-        bind:value
-        min={min}
-        max={max}
-        step={step}
-        class="w-12 text-center text-lg px-1 py-0.5 border border-blue-400 rounded text-blue-900"
-    />
-    <button 
-        onclick={increment} 
-        disabled={value >= max} 
-        class="bg-blue-400 text-blue-900 hover:bg-blue-500 font-bold rounded px-2 py-1 text-lg disabled:cursor-not-allowed disabled:opacity-50"
-    >
-        +
-    </button>
-    <button 
-        onclick={() => postBahnen(value)} 
-        disabled={value >= max} 
-        class="bg-blue-400 text-blue-900 hover:bg-blue-500 font-bold rounded px-2 py-1 text-lg disabled:cursor-not-allowed disabled:opacity-50"
-    >
-        speichern
-    </button>
+    <div class="flex items-center gap-2">
+        <button 
+            onclick={decrement} 
+            disabled={value <= min} 
+            class="bg-blue-400 text-blue-900 hover:bg-blue-500 font-bold rounded px-2 py-1 text-lg disabled:cursor-not-allowed disabled:opacity-40"
+        >
+            -
+        </button>
+        <input
+            type="number"
+            bind:value
+            min={min}
+            max={max}
+            step={step}
+            class="w-12 text-center text-lg px-1 py-0.5 border border-blue-400 rounded text-blue-900"
+        />
+        <button 
+            onclick={increment} 
+            disabled={value >= max} 
+            class="bg-blue-400 text-blue-900 hover:bg-blue-500 font-bold rounded px-2 py-1 text-lg disabled:cursor-not-allowed disabled:opacity-50"
+        >
+            +
+        </button>
+        <button 
+            onclick={() => postBahnen(value)} 
+            disabled={value >= max} 
+            class="bg-blue-400 text-blue-900 hover:bg-blue-500 font-bold rounded px-2 py-1 text-lg disabled:cursor-not-allowed disabled:opacity-50"
+        >
+            speichern
+        </button>
+    </div>
 </div>

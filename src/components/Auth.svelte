@@ -1,5 +1,6 @@
 <script lang="ts">
     import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
     import { data } from '../stores/appData.svelte';
 
     let { type = "login" } = $props();
@@ -13,10 +14,23 @@
 
     let loginStatus : Boolean = $state(true);
 
+    onMount(() => {
+        // Check if the user is already logged in
+        if (data.userID) {
+            goto('/meinebahnen');
+        }
+        else if (data.userID == 0) {
+            goto('/login');
+        }
+    });
+
     async function handleLogin() {
+        let lowerName = registerEmail.toLowerCase();
+        let nameEncoded = encodeURIComponent(loginEmail);
+        let passwordEncoded = encodeURIComponent(loginPassword);
         try {
             const response = await fetch(
-                `https://www.schlossbad-erwitte.de/apps/bahnen/php/getUser.php?name=${loginEmail}&passwd=${loginPassword}`, {
+                `https://www.schlossbad-erwitte.de/apps/bahnen/php/getUser.php?name=${nameEncoded}&passwd=${passwordEncoded}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -30,7 +44,7 @@
             const userData = await response.json();
             data.userID = userData.user.id;
             //console.log('Login successful:', data);
-
+ 
             goto('/meinebahnen');
             // Handle the response data (e.g., save token, redirect, etc.)
         } catch (error) {
