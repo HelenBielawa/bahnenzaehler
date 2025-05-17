@@ -1,22 +1,28 @@
 <script lang="ts">
 
+    import { data } from '../stores/appData.svelte';
+    // interface Props {
+    //     swimData: Array<{ day: string; anzahl: number }>;
+    // }
+    // let {
+    //     swimData = [{"day": "2025.05-01", "anzahl": 22}],
+    // } : Props = $props();
 
-    interface Props {
-        swimData: Array<{ day: string; anzahl: number }>;
-    }
-    let {
-        swimData = [{"day": "2025.05-01", "anzahl": 22}],
-    } : Props = $props();
+    // $inspect("bahnen data in history", swimData);
 
-    $inspect("bahnen data in history", swimData);
-    let maxanzahl = $derived(swimData.map((item) => item.anzahl).reduce((a, b) => Math.max(a, b), 0));
+    type SwimItem = { day: string; anzahl: number };
+    
+    let swimData = $derived(data.swimData);
+    let maxanzahl = $derived(
+        (swimData as SwimItem[]).map((item: SwimItem) => item.anzahl).reduce((a: number, b: number) => Math.max(a, b), 0)
+    );
 
     let swims = $derived(swimData
-        .filter((item) => item.anzahl > 0)
-        .map((item) => ({
-            ...item,
-            percentOfMax: (item.anzahl / maxanzahl) * 100
-        })));
+            .filter((item: SwimItem) => item.anzahl > 0 && item.day !== undefined && item.anzahl !== undefined)
+            .map((item: SwimItem) => ({
+                ...item,
+                percentOfMax: (item.anzahl / maxanzahl) * 100
+            })));
         function formatDate(dateString: string): string {
             const [day, month, year] = dateString.split(".");
             const date = new Date(`${year}-${month}-${day}`);

@@ -1,0 +1,18 @@
+[
+    {"destination":"Stirpe",
+    "bahnen": 56},
+    {"destination":"Münster",
+    "bahnen": 1240},
+    {"destination": "Bielefeld",
+    "bahnen": 920},
+    {"destination": "Berlin",
+    "bahnen": 7220},    
+    {"destination": "Hamburg",
+    "bahnen": 6020},
+    {"destination": "Sylt",
+    "bahnen": 7300},
+    {"destination": "Mallorca",
+    "bahnen": 28000},
+    {"destination": "Hawaii",
+    "bahnen": 236600}
+]

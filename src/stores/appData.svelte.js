@@ -1,9 +1,11 @@
 class Data {
 
-    userID = $state(0);
+    userID = $state();
 
     swimData = $state();
 
+    challengeData = $state({"destination":"Lippstadt",
+        "bahnen": 135});
 }
 
 

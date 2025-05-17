@@ -11,6 +11,8 @@
     let confirmPassword: string = $state("");
     let userID: number = $state(0);
 
+    let loginStatus : Boolean = $state(true);
+
     async function handleLogin() {
         try {
             const response = await fetch(
@@ -20,42 +22,66 @@
                     'Content-Type': 'application/json',
                 }
             });
-            console.log('Response:', response);
+            //console.log('Response:', response);
             if (!response.ok) {
                 throw new Error('Login failed');
             }
 
             const userData = await response.json();
-            data.userID = userData.userID;
-            console.log('Login successful:', data);
+            data.userID = userData.user.id;
+            //console.log('Login successful:', data);
 
             goto('/meinebahnen');
             // Handle the response data (e.g., save token, redirect, etc.)
         } catch (error) {
             console.error('Error during login:', error);
+            loginStatus = false;
             // Handle error (e.g., show error message to user)
         }
     }
-
+    $inspect("registerEmail", registerEmail);
     async function handleRegister() {
-        let lowerName = loginEmail.toLowerCase();
+        let lowerName = registerEmail.toLowerCase();
         try {
-            const response = await fetch('https://www.schlossbad-erwitte.de/apps/bahnen/php/createUserGet.php'+'name='+{loginEmail}+'lcname='+{lowerName}+'passwd='+{loginPassword}+'summe=0', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
+            const formData = new FormData();
+            formData.append('name', registerEmail);
+            formData.append('lcname', lowerName);
+            formData.append('passwd', registerPassword);
+            formData.append('summe', "0");
+
+            const response = await fetch(
+                'https://www.schlossbad-erwitte.de/apps/bahnen/php/createUser.php', {
+                method: 'POST',
+                body: formData
             });
 
             if (!response.ok) {
-                throw new Error('Login failed');
+                const errorText = await response.text();
+                throw new Error(`Registration failed: ${errorText}`);
             }
 
-            const data = await response.json();
-            console.log('Login successful:', data);
-            // Handle the response data (e.g., save token, redirect, etc.)
+            // Always try to parse as JSON, even if content-type is wrong
+            let data;
+            try {
+                data = await response.json();
+                //console.log('Registration successful:', data);
+                goto('/login');
+                // Handle the response data (e.g., save token, redirect, etc.)
+            } catch (e) {
+                const text = await response.text();
+                try {
+                    data = JSON.parse(text);
+                    //console.log('Registration successful (parsed manually):', data);
+                    goto('/login');
+                    // Handle the response data (e.g., save token, redirect, etc.)
+                } catch (err) {
+                    console.warn('Registration response is not JSON:', text);
+
+                }
+            }
         } catch (error) {
-            console.error('Error during login:', error);
+            console.error('Error during registration:', error);
+            loginStatus = false;
             // Handle error (e.g., show error message to user)
         }
     }
@@ -75,6 +101,10 @@
             
             <button type="submit">Login</button>
         </form>
+        {#if !loginStatus}
+            <p style="color: red;">Login fehlgeschlagen. Bitte überprüfe Deine Anmeldedaten.</p>
+            <p>Sollte das Problem bestehen bleiben, schreib uns eine <a href="mailto:support@schlossbad-erwitte.de">E-Mail: support@schlossbad-erwitte.de</a></p>
+        {/if}
     </div>
     {:else if (type == "register")}
     <div class="form-container">
@@ -94,8 +124,13 @@
                 <p style="color: red;">Passwörter stimmen nicht überein.</p>
             {/if}
         </form>
+            {#if !loginStatus}
+                <p style="color: red;">Registrierung fehlgeschlagen. Bitte überprüfe Deine Anmeldedaten, oder versuche es mit einer anderen Kombination.</p>
+                <p>Sollte das Problem bestehen bleiben, schreib uns eine <a href="mailto:support@schlossbad-erwitte.de">E-Mail: support@schlossbad-erwitte.de</a></p>
+            {/if}
     </div>
     {/if}
+
 </div>
 
 

@@ -1,17 +1,16 @@
 <script lang="ts">
-    interface Props {
-        challengeDestination: string;
-        challengeOrigin: string;
-        challengeLength: number;
-        currentDistance: number;
-    }
-    let {
-        challengeDestination = "",
-        challengeOrigin = "",
-        challengeLength = 10,
-        currentDistance = 0,
-    } : Props = $props();
+    import { data } from '../stores/appData.svelte';
 
+    type SwimItem = { day: string; anzahl: number };
+    let swimData = $derived(data.swimData);
+    let bahnenSum = $derived(
+        (swimData as SwimItem[]).map((item: SwimItem) => item.anzahl).reduce((a: number, b: number) => a + b, 0)
+    );
+
+    let challengeDestination = $derived(data.challengeData.destination);
+    let challengeOrigin = "Erwitte";
+    let challengeLength = $derived(data.challengeData.bahnen * 50);
+    let currentDistance = $derived(bahnenSum * 50);
     // Berechnung des Fortschritts in Prozent
     let progressPercentage = $derived((currentDistance / challengeLength) * 100);
     let missingDistance = $derived(challengeLength - currentDistance);

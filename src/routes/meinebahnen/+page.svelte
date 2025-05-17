@@ -2,13 +2,13 @@
     import { goto } from '$app/navigation';
     import { onMount } from 'svelte';
     import { data } from '../../stores/appData.svelte';
-
+    import ChallengeSelector from '../../components/ChallengeSelector.svelte';
     import ChallengeStatus from "../../components/ChallengeStatus.svelte";
 	import Input from "../../components/Input.svelte";
     import History from "../../components/History.svelte";
 
     let id = $derived(data.userID);
-
+    let showChallenges : Boolean = $state(false);
     async function getBahnen(id: number) {
         try {
             const response = await fetch('https://www.schlossbad-erwitte.de/apps/bahnen/php/getBahnen.php?userid='+id, {
@@ -32,16 +32,9 @@
             return []; // Return an empty array on error
         }
     }
-
-
-    //Aufruf der Get Bahnen Funktion bei Öffnen der Seite - Bahnendaten werden zentral gespeichert
-    let bahnen = $state([]);
-
-    onMount(async () => {
-        bahnen = await getBahnen(id);
+    onMount(() => {
+        getBahnen(id);
     });
-$inspect("bahnen data in page", bahnen);
- 
 
 </script>   
 
@@ -51,30 +44,78 @@ $inspect("bahnen data in page", bahnen);
 
 
     <div class="flex flex-col w-4/5 gap-4">
-
+    <div class="flex justify-end">
+        <button
+            class="bg-blue-400 text-blue-900 hover:bg-blue-500 font-bold rounded px-2 py-1 text-lg"
+            onclick={() => {
+                data.userID = 0;
+                data.swimData = [];
+                data.challengeData = {destination: "Stirpe", bahnen: 56};
+                goto('/login');
+            }}
+            aria-label="Logout"
+        >
+            Logout
+        </button>
+    </div>
         <div class="text-center text-4xl font-bold text-white py-4">
             <span class="text-blue-900"><h1>Bahnenzähler</h1></span>
         </div>
         <div class="text-l font-bold text-white py-4">
-            <h2 class="text-lg text-blue-900 font-bold">Heutige Bahnen eintragen:</h2>
+            <h2 class="text-lg text-blue-900 font-bold">Neue Bahnen eintragen:</h2>
         </div>
         <Input />
         <div class="text-l font-bold text-white py-4">
-            <h2 class="text-lg text-blue-900 font-bold">Status deiner Challenge:</h2>
+            <h2 class="text-lg text-blue-900 font-bold">Challenge-Status:</h2>
         </div>
-        <ChallengeStatus
-            challengeDestination="Stockholm"
-            challengeOrigin="Erwitte"
-            challengeLength={1500}
-            currentDistance={100.5}
-        />
-
-
+        {#if data.swimData?.length >0}
+            <ChallengeStatus />
+        {/if}
+        <div class="text-l font-bold text-white py-4">
+            <h2 class="text-lg text-blue-900 font-bold">Andere Challenge anzeigen:
+                <button
+                class="bg-blue-400 text-blue-900 hover:bg-blue-500 font-bold rounded px-2 py-1 text-lg" 
+                style="padding: {showChallenges ? '0.5rem 1.5rem' : '0.5rem'}"
+                onclick={() => showChallenges = !showChallenges}
+                aria-label="Show challenges"
+                >
+                {#if showChallenges}
+                    -
+                {:else}
+                    +
+                {/if}
+                </button>
+                </h2>
+        </div>
+        {#if showChallenges}
+            <div >
+                <ChallengeSelector />
+            </div>
+        {/if}
+ 
         <div class="text-l font-bold text-white py-4">
             <h2 class="text-lg text-blue-900 font-bold">Deine Bahnen:</h2>
         </div>
-        <History swimData={bahnen}/>
+        {#if data.swimData?.length > 0}
+            <History />
+        {:else}
+            <div class="text-l font-bold text-white py-4">
+                <h2 class="text-lg text-blue-900 font-bold">Trag oben ein, wie viel du heute geschwommen bist. Dann siehst du hier deine Fortschritts-Übersicht!.</h2>
+            </div>
+        {/if}
+
 
 
     </div>
+    <footer class="w-full mt-8 py-4 text-blue-900 text-center text-sm rounded-t">
+        <div class="flex flex-col md:flex-row justify-center items-center gap-2">
+            <button onclick={() => goto('/impressum')} class="hover:underline">
+                Impressum
+            </button>
+            <span class="hidden md:inline">|</span>
+            <a href="https://www.schlossbad-erwitte.de" target="_blank" rel="noopener noreferrer" class="hover:underline">
+                Zur Schlossbad-Website
+            </a>
+        </div>
+    </footer>
 </div>
