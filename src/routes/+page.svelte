@@ -35,10 +35,12 @@
             Registrieren
         </button>
     </div>
+    <img src="/beckenboden.png" alt="Beckenboden" class="my-8 max-w-full rounded shadow-lg" />
     <p class="text-lg m-8">
-        Die typografische Arbeit im 50-Meter-Becken beschäftigt sich mit dem eigenen Standort und dem gedanklichen in die Ferne Schweifen. In der Mitte des Beckens das süße Versprechen: Sie haben ihr Ziel erreicht. Die gleichnamige Arbeit wurde von der Künstlerin <a href="https://www.jennagesse.de/">Jenna Gesse</a> für die Aktion freischwimmen - Kunst im Bad entwickelt und mit viel ehrenamtlichem Engagement umgesetzt.
+        Diese App ist inspiriert von der Gestaltung unseres Beckenbodens: Die typografische Arbeit im 50-Meter-Becken beschäftigt sich mit dem eigenen Standort und dem gedanklichen in die Ferne Schweifen. In der Mitte des Beckens das süße Versprechen: Sie haben ihr Ziel erreicht. Die gleichnamige Arbeit wurde von der Künstlerin <a href="https://www.jennagesse.de/" target="_blank">Jenna Gesse</a> für die Aktion freischwimmen - Kunst im Bad entwickelt und mit viel ehrenamtlichem Engagement umgesetzt.
 
-Wir freuen uns sehr, dass Kunst im Bad auch in 2025 wieder bei uns im Schlossbad Erwitte vertreten ist und bedanken uns recht herzlich bei allen beteiligten Künstlern. Weitere Infos gibt es bei freischwimmen - Kunst im Bad oder bei Instagram.
+Wir freuen uns sehr, dass Kunst im Bad auch in 2025 wieder bei uns im Schlossbad Erwitte vertreten ist und bedanken uns recht herzlich bei allen beteiligten Künstlern.
+ Weitere Infos gibt es bei <a href="https://kunstimbad.de/" target="_blank">freischwimmen - Kunst im Bad</a> oder bei <a href="https://www.instagram.com/freischwimmen_kunst_im_bad/" target="_blank">Instagram</a>.
     </p>
 
     <div class="w-full flex flex-col h-10 relative  text-blue-900 mb-2">
