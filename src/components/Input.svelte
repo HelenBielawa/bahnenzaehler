@@ -1,9 +1,14 @@
 <script lang="ts">
     import {data} from '../stores/appData.svelte';
 
-    let value: number = $state(0); // Der aktuelle Wert
+    let { date = new Date(),
+            currentNumber = 0,
+            showDate = true
+     } = $props();
+
+    let value: number = $state(currentNumber); // Der aktuelle Wert
     let min: number = 0; // Minimaler Wert
-    let max: number = 5000; // Maximaler Wert
+    let max: number = 500; // Maximaler Wert
     let step: number = 1; // Schrittweite
 
     let id = $derived(data.userID);
@@ -22,8 +27,7 @@
         }
     };
 
-    let today = new Date()
-    let day = $derived(today);
+    let day = $derived(date);
 
     let formattedDate = $derived.by(() =>{
         const d = new Date(day);
@@ -33,37 +37,73 @@
 
     async function postBahnen(bahnen: number) {
         try {
-            const response = await fetch('https://www.schlossbad-erwitte.de/apps/bahnen/php/uploadBahnen.php?userid='+id+'&day='+formattedDate+'&anzahl='+value, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
+            // Update the local data store and the database
+            const existingIndex = data.swimData.findIndex((item: { day: string; anzahl: number }) => item.day === formattedDate);
+            //if day is already in data, update it
+            if (existingIndex !== -1) {
+                const updateFormData = new FormData();
+                updateFormData.append('userid', (id ?? '').toString());
+                updateFormData.append('day', formattedDate);
+                updateFormData.append('anzahl', (value ?? '').toString());
+
+                data.swimData[existingIndex] = {
+                    day: formattedDate,
+                    anzahl: value
+                };
+                const response = await fetch('https://www.schlossbad-erwitte.de/apps/bahnen/php/updateDayBahnen.php?', {
+                    method: 'POST',
+                    body: updateFormData
+                });
+
+                if (!response.ok) {
+                    throw new Error('Update Bahnen failed');
                 }
-            });
+            //if it is a new entry, push it to local store and post it to the database
+            } else {
+                data.swimData.push({
+                    day: formattedDate,
+                    anzahl: value
+                });
+                const response = await fetch('https://www.schlossbad-erwitte.de/apps/bahnen/php/uploadBahnen.php?userid='+id+'&day='+formattedDate+'&anzahl='+value, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
 
-            if (!response.ok) {
-                throw new Error('Postbahnen failed');
+                if (!response.ok) {
+                    throw new Error('Postbahnen failed');
+                }
             }
-
-            const postData = await response.json();
-
-            data.swimData.push({
-                day: formattedDate,
-                anzahl: value
+            const userDataTotal = new FormData();
+            userDataTotal.append('userid', (id ?? '').toString());
+            userDataTotal.append('summe', (data.bahnenSum).toString());
+            //in any case, update the users total number of bahnen
+            const totalResponse = await fetch('https://www.schlossbad-erwitte.de/apps/bahnen/php/updateUser.php?', {
+                method: 'POST',
+                body: userDataTotal
             });
-            console.log('Postbahnen successful:', data);
+            if (!totalResponse.ok) {
+                throw new Error('Update user bahnen failed');
+            }
+        console.log('Postbahnen successful:', data);
         } catch (error) {
             console.error('Error during postbahnen:', error);
         }
     }
 
-    $inspect("swimdata in input", data.swimData);
 </script>
-<div class="w-full flex flex-col gap-2 text-blue-900">
-    <input
-        type="date"
-        bind:value={day}
-        class="border border-blue-400 rounded px-2 py-1 max-w-80 text-lg w-full text-blue-900"
-    />
+
+<div class="flex flex-col gap-2 text-blue-900">
+    {#if showDate}
+        <input
+            type="date"
+            bind:value={day}
+            max={new Date().toISOString().split('T')[0]}
+            class="border border-blue-400 rounded px-2 py-1 max-w-80 text-lg w-full text-blue-900"
+        />
+    {/if}
+
     <div class="flex items-center gap-2">
         <button 
             onclick={decrement} 
@@ -88,11 +128,14 @@
             +
         </button>
         <button 
-            onclick={() => postBahnen(value)} 
-            disabled={value >= max} 
+            onclick={(e) => {data.editingIndex = null; e.stopPropagation(); postBahnen(value);}} 
+            disabled={value > max || value < min} 
             class="bg-blue-400 text-blue-900 hover:bg-blue-500 font-bold rounded px-2 py-1 text-lg disabled:cursor-not-allowed disabled:opacity-50"
         >
             speichern
         </button>
     </div>
+    {#if value > max || value < min}
+        <p class="text-blue-900 text-sm">Bitte einen Wert zwischen {min} und {max} eingeben.</p>
+    {/if}
 </div>

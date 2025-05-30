@@ -7,9 +7,10 @@
 	import Input from "../../components/Input.svelte";
     import History from "../../components/History.svelte";
 
-    let id = $derived(data.userID);
+    let id: number|undefined = $derived(data.userID);
     let showChallenges : Boolean = $state(false);
-    async function getBahnen(id: number) {
+    let showEditInfo : Boolean = $state(false);
+    async function getBahnen(id: number|undefined) {
         try {
             const response = await fetch('https://www.schlossbad-erwitte.de/apps/bahnen/php/getBahnen.php?userid='+id, {
                 method: 'GET',
@@ -47,7 +48,7 @@
 
 
 
-<div class="flex flex-col gap-4 bg-blue-300 min-h-screen w-screen items-center py-4 ">
+<div class="flex flex-col gap-2 bg-blue-300 min-h-screen w-screen items-center py-4 ">
 
 
     <div class="flex flex-col w-4/5 gap-4">
@@ -57,7 +58,7 @@
             onclick={() => {
                 data.userID = 0;
                 data.swimData = [];
-                data.challengeData = {destination: "Stirpe", bahnen: 56};
+                data.challengeData = {destination: "Stirpe", bahnen: 56, id: 1};
                 goto('/login');
             }}
             aria-label="Logout"
@@ -79,10 +80,10 @@
             <ChallengeStatus />
         {/if}
         <div class="text-l font-bold text-white py-4">
-            <h2 class="text-lg text-blue-900 font-bold">Andere Challenge anzeigen:
+            <h2 class="text-lg text-blue-900 font-bold">Andere Challenges anzeigen:
                 <button
-                class="bg-blue-400 text-blue-900 hover:bg-blue-500 font-bold rounded px-2 py-1 text-lg" 
-                style="padding: {showChallenges ? '0.5rem 1.5rem' : '0.5rem'}"
+                class="flex bg-blue-400 text-blue-900 hover:bg-blue-500 font-bold rounded-full w-5 h-5 text-lg items-center justify-center" 
+            
                 onclick={() => showChallenges = !showChallenges}
                 aria-label="Show challenges"
                 >
@@ -102,6 +103,18 @@
  
         <div class="text-l font-bold text-white py-4">
             <h2 class="text-lg text-blue-900 font-bold">Deine Bahnen:</h2>
+            <button
+                class="flex bg-blue-400 text-blue-900 hover:bg-blue-500 font-bold rounded-full w-5 h-5 text-lg items-center justify-center" 
+                aria-label="Info"
+                onclick={() => showEditInfo = !showEditInfo}
+                tabindex="0"
+            >?</button>
+            {#if showEditInfo}
+                <p class="text-blue-900">
+                    Hier siehst Du, wann du wie viele Bahnen geschwommen bist. Klicke auf eine Bahn, um die Daten zu ändern.
+                </p>
+            {/if}
+
         </div>
         {#if data.swimData?.length > 0}
             <History />

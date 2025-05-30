@@ -1,18 +1,10 @@
 [
-    {"destination":"Stirpe",
-    "bahnen": 56},
-    {"destination":"Münster",
-    "bahnen": 1240},
-    {"destination": "Bielefeld",
-    "bahnen": 920},
-    {"destination": "Berlin",
-    "bahnen": 7220},    
-    {"destination": "Hamburg",
-    "bahnen": 6020},
-    {"destination": "Sylt",
-    "bahnen": 7300},
-    {"destination": "Mallorca",
-    "bahnen": 28000},
-    {"destination": "Hawaii",
-    "bahnen": 236600}
+    {"id": 1, "destination":"Stirpe", "bahnen": 56},
+    {"id": 2, "destination":"Münster", "bahnen": 1240},
+    {"id": 3, "destination": "Bielefeld", "bahnen": 920},
+    {"id": 4, "destination": "Berlin", "bahnen": 7220},    
+    {"id": 5, "destination": "Hamburg", "bahnen": 6020},
+    {"id": 6, "destination": "Sylt", "bahnen": 7300},
+    {"id": 7, "destination": "Mallorca", "bahnen": 28000},
+    {"id": 8, "destination": "Hawaii", "bahnen": 236600}
 ]

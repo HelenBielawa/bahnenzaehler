@@ -53,7 +53,7 @@
             // Handle error (e.g., show error message to user)
         }
     }
-    $inspect("registerEmail", registerEmail);
+
     async function handleRegister() {
         let lowerName = registerEmail.toLowerCase();
         try {

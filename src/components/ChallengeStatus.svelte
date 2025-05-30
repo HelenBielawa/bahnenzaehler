@@ -11,9 +11,10 @@
     let challengeOrigin = "Erwitte";
     let challengeLength = $derived(data.challengeData.bahnen * 50/1000);
     let currentDistance = $derived(bahnenSum * 50/1000);
-    // Berechnung des Fortschritts in Prozent
     let progressPercentage = $derived((currentDistance / challengeLength) * 100);
-    let missingDistance = $derived(challengeLength - currentDistance);
+
+    $inspect("swimData", swimData);
+
 </script>
 
 <div class="w-full bg-blue-400 overflow-hidden h-30 relative rounded-lg text-blue-900 p-2">
