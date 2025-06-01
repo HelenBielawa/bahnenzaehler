@@ -2,7 +2,7 @@ class Data {
 
     userID: number|undefined = $state();
     userName: string = $state("");
-
+    loginStatus : Boolean = $state(true);
     challenges = [
         {"id": 1, "destination":"Stirpe", "bahnen": 56},
         {"id": 2, "destination":"Lippstadt", "bahnen": 135},

@@ -12,8 +12,6 @@
     let confirmPassword: string = $state("");
     let changedPassword: string = $state("");
 
-    let loginStatus : Boolean = $state(true);
-
     onMount(() => {
         // Check if the user is already logged in
         if (type != "delete" && type != "change"){
@@ -46,10 +44,11 @@
             data.userID = userData.user.id;
             data.userName = userData.user.name;
             data.challengeId = userData.user.challengeid;
+            data.loginStatus = true;
             goto('/meinebahnen');
         } catch (error) {
             console.error('Error during login:', error);
-            loginStatus = false;
+            data.loginStatus = false;
         }
     }
 
@@ -89,7 +88,7 @@
             }
         } catch (error) {
             console.error('Error during registration:', error);
-            loginStatus = false;
+            data.loginStatus = false;
         }
     }
 
@@ -113,7 +112,7 @@
             goto('/register');
         } catch (error) {
             console.error('Error during deletion:', error);
-            loginStatus = false;
+            data.loginStatus = false;
         }
     }
 
@@ -138,7 +137,7 @@
             goto('/login');
         } catch (error) {
             console.error('Error during password change:', error);
-            loginStatus = false;
+            data.loginStatus = false;
         }
     }
     $effect(() => {
@@ -163,7 +162,7 @@
             
             <button type="submit">Login</button>
         </form>
-        {#if !loginStatus}
+        {#if !data.loginStatus}
             <p style="color: red;">Login fehlgeschlagen. Bitte überprüfe Deine Anmeldedaten.</p>
             <p>Sollte das Problem bestehen bleiben, schreib uns eine <a href="mailto:support@schlossbad-erwitte.de">E-Mail: support@schlossbad-erwitte.de</a></p>
         {/if}
@@ -187,7 +186,7 @@
                 <p style="color: red;">Passwörter stimmen nicht überein.</p>
             {/if}
         </form>
-            {#if !loginStatus}
+            {#if !data.loginStatus}
                 <p style="color: red;">Registrierung fehlgeschlagen. Bitte überprüfe Deine Anmeldedaten, oder versuche es mit einer anderen Kombination.</p>
                 <p>Sollte das Problem bestehen bleiben, schreib uns eine <a href="mailto:support@schlossbad-erwitte.de">E-Mail: support@schlossbad-erwitte.de</a></p>
             {/if}
@@ -204,7 +203,7 @@
                 
                 <button type="submit">Löschen</button>
             </form>
-            {#if !loginStatus}
+            {#if !data.loginStatus}
                 <p style="color: red;">Verifikation fehlgeschlagen. Bitte überprüfe Deine Anmeldedaten.</p>
                 <p>Sollte das Problem bestehen bleiben, schreib uns eine <a href="mailto:support@schlossbad-erwitte.de">E-Mail: support@schlossbad-erwitte.de</a></p>
             {/if}
@@ -226,7 +225,7 @@
                     <p style="color: red;">Passwörter stimmen nicht überein.</p>
                 {/if}
             </form>
-            {#if !loginStatus}
+            {#if !data.loginStatus}
                 <p style="color: red;">Passwortänderung fehlgeschlagen. Bitte überprüfe Deine Anmeldedaten, oder versuche es mit einer anderen Kombination.</p>
                 <p>Sollte das Problem bestehen bleiben, schreib uns eine <a href="mailto:support@schlossbad-erwitte.de">E-Mail: support@schlossbad-erwitte.de</a></p>
             {/if}

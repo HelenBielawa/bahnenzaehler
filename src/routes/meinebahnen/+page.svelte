@@ -60,6 +60,7 @@
                 data.userID = 0;
                 data.swimData = [];
                 data.challengeId = 1;
+                data.loginStatus = false;
                 goto('/login');
             }}
             aria-label="Logout"
