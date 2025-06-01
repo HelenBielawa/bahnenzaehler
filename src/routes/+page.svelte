@@ -3,7 +3,7 @@
 
 </script>
 
-<div class="flex flex-col items-center justify-center min-h-screen bg-blue-300 text-center p-4">
+<div class="flex flex-col items-center justify-center bg-blue-300 text-center p-4">
     <div class="w-full flex flex-col h-10 relative  text-blue-900 mb-2">
         <!-- Marker -->
         <div class="absolute -top-2.5 left-0 h-7 w-2 bg-black"></div>

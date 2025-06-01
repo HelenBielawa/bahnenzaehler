@@ -1,13 +1,11 @@
 <script lang="ts">
 
-    import { stopPropagation } from 'svelte/legacy';
-import { data } from '../stores/appData.svelte';
+    import { data } from '../stores/appData.svelte';
     import Input from './Input.svelte';
-    type SwimItem = { day: string; anzahl: number };
+    type SwimItem = {id: number; day: string; anzahl: number };
     
-    let swimData = $derived(data.swimData);
     let maxanzahl = $derived(
-        (swimData as SwimItem[]).map((item: SwimItem) => item.anzahl).reduce((a: number, b: number) => Math.max(a, b), 0)
+        (data.swimData as SwimItem[]).map((item: SwimItem) => item.anzahl).reduce((a: number, b: number) => Math.max(a, b), 0)
     );
 
     function getDate(dateString: string): Date {
@@ -15,9 +13,8 @@ import { data } from '../stores/appData.svelte';
         return new Date(`${year}-${month}-${day}`);
     }
 
-
-    let swims = $derived(swimData
-            .filter((item: SwimItem) => item.anzahl > 0 && item.day !== undefined && item.anzahl !== undefined)
+    let swims = $derived(data.swimData
+            .filter((item: SwimItem) => item.day !== undefined && item.anzahl !== undefined)
             .map((item: SwimItem) => ({
                 ...item,
                 percentOfMax: (item.anzahl / maxanzahl) * 100

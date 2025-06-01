@@ -10,6 +10,7 @@
     let id: number|undefined = $derived(data.userID);
     let showChallenges : Boolean = $state(false);
     let showEditInfo : Boolean = $state(false);
+
     async function getBahnen(id: number|undefined) {
         try {
             const response = await fetch('https://www.schlossbad-erwitte.de/apps/bahnen/php/getBahnen.php?userid='+id, {
@@ -25,7 +26,6 @@
 
             const swimData = await response.json();
             data.swimData = swimData.bahnen;
-            console.log('Fetching swimdata successful: ', swimData);
 
             return swimData.bahnen; // Return the fetched data
         } catch (error) {
@@ -37,7 +37,7 @@
         getBahnen(id);       
 
     });
-    $inspect("userid in my page", data.userID)
+
     $effect(() => {
         if (data.userID == 0 || data.userID == undefined) {
             goto('/login');
@@ -48,17 +48,18 @@
 
 
 
-<div class="flex flex-col gap-2 bg-blue-300 min-h-screen w-screen items-center py-4 ">
+<div class="flex flex-col gap-2 bg-blue-300 w-screen items-center py-4 ">
 
 
     <div class="flex flex-col w-4/5 gap-4">
-    <div class="flex justify-end">
+    <div class="absolute top-4 right-4 flex flex-col items-end gap-2 z-10">
+        <p class="w-40 text-blue-900 font-bold rounded px-2 py-1 text-lg">{data.userName?.charAt(0).toUpperCase() + data.userName?.slice(1)}</p>
         <button
-            class="bg-blue-400 text-blue-900 hover:bg-blue-500 font-bold rounded px-2 py-1 text-lg"
+            class="w-40 bg-blue-200 text-blue-900 hover:bg-blue-500 font-bold rounded px-2 py-1 text-lg"
             onclick={() => {
                 data.userID = 0;
                 data.swimData = [];
-                data.challengeData = {destination: "Stirpe", bahnen: 56, id: 1};
+                data.challengeId = 1;
                 goto('/login');
             }}
             aria-label="Logout"
@@ -120,7 +121,7 @@
             <History />
         {:else}
             <div class="text-l font-bold text-white py-4">
-                <h2 class="text-lg text-blue-900 font-bold">Trag oben ein, wie viel du heute geschwommen bist. Dann siehst du hier deine Fortschritts-Übersicht!.</h2>
+                <h2 class="text-lg text-blue-900 font-bold">Trag oben ein, wie viel du heute geschwommen bist. Dann siehst du hier deine Fortschritts-Übersicht.</h2>
             </div>
         {/if}
 

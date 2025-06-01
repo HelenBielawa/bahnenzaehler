@@ -6,21 +6,19 @@
             showDate = true
      } = $props();
 
-    let value: number = $state(currentNumber); // Der aktuelle Wert
-    let min: number = 0; // Minimaler Wert
-    let max: number = 500; // Maximaler Wert
-    let step: number = 1; // Schrittweite
+    let value: number = $state(currentNumber); 
+    let min: number = 0; 
+    let max: number = 500; 
+    let step: number = 1; 
 
-    let id = $derived(data.userID);
+    let userid = $derived(data.userID);
 
-    // Funktion zum Erhöhen des Wertes
     const increment = () => {
         if (value + step <= max) {
             value += step;
         }
     };
 
-    // Funktion zum Verringern des Wertes
     const decrement = () => {
         if (value - step >= min) {
             value -= step;
@@ -37,18 +35,17 @@
 
     async function postBahnen(bahnen: number) {
         try {
-            // Update the local data store and the database
             const existingIndex = data.swimData.findIndex((item: { day: string; anzahl: number }) => item.day === formattedDate);
             //if day is already in data, update it
             if (existingIndex !== -1) {
                 const updateFormData = new FormData();
-                updateFormData.append('userid', (id ?? '').toString());
-                updateFormData.append('day', formattedDate);
+                updateFormData.append('id', (data.swimData[existingIndex].id ?? '').toString());
                 updateFormData.append('anzahl', (value ?? '').toString());
 
                 data.swimData[existingIndex] = {
                     day: formattedDate,
-                    anzahl: value
+                    anzahl: value,
+                    id: data.swimData[existingIndex].id
                 };
                 const response = await fetch('https://www.schlossbad-erwitte.de/apps/bahnen/php/updateDayBahnen.php?', {
                     method: 'POST',
@@ -62,9 +59,10 @@
             } else {
                 data.swimData.push({
                     day: formattedDate,
-                    anzahl: value
+                    anzahl: value,
+                    id: 0
                 });
-                const response = await fetch('https://www.schlossbad-erwitte.de/apps/bahnen/php/uploadBahnen.php?userid='+id+'&day='+formattedDate+'&anzahl='+value, {
+                const response = await fetch('https://www.schlossbad-erwitte.de/apps/bahnen/php/uploadBahnen.php?userid='+data.userID+'&day='+formattedDate+'&anzahl='+value, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -75,10 +73,10 @@
                     throw new Error('Postbahnen failed');
                 }
             }
+            //update the total number of bahnen for the user
             const userDataTotal = new FormData();
-            userDataTotal.append('userid', (id ?? '').toString());
+            userDataTotal.append('id', (userid ?? '').toString());
             userDataTotal.append('summe', (data.bahnenSum).toString());
-            //in any case, update the users total number of bahnen
             const totalResponse = await fetch('https://www.schlossbad-erwitte.de/apps/bahnen/php/updateUser.php?', {
                 method: 'POST',
                 body: userDataTotal
@@ -86,7 +84,7 @@
             if (!totalResponse.ok) {
                 throw new Error('Update user bahnen failed');
             }
-        console.log('Postbahnen successful:', data);
+
         } catch (error) {
             console.error('Error during postbahnen:', error);
         }
