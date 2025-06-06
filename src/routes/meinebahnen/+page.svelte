@@ -10,6 +10,7 @@
     let id: number|undefined = $derived(data.userID);
     let showChallenges : Boolean = $state(false);
     let showEditInfo : Boolean = $state(false);
+    let showMenu : Boolean = $state(false);
 
     async function getBahnen(id: number|undefined) {
         try {
@@ -53,7 +54,17 @@
 
     <div class="flex flex-col w-4/5 gap-4">
     <div class="absolute top-4 right-4 flex flex-col items-end gap-2 z-10">
-        <p class="w-40 text-blue-900 font-bold rounded px-2 py-1 text-lg">{data.userName?.charAt(0).toUpperCase() + data.userName?.slice(1)}</p>
+        <button
+            onclick={() =>{showMenu = !showMenu}}>
+        <svg fill="none" width="7vw" height="7vw" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 18L20 18" stroke="#0d47a1" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M4 12L20 12" stroke="#0d47a1" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M4 6L20 6" stroke="#0d47a1" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+        </button>
+        {#if showMenu}
+        <div class="flex flex-col gap-2 bg-blue-400 p-2 rounded">
+        <p class="w-40 text-blue-900  font-bold rounded px-2 py-1 text-lg">{data.userName?.charAt(0).toUpperCase() + data.userName?.slice(1)}</p>
         <button
             class="w-40 bg-blue-200 text-blue-900 hover:bg-blue-500 font-bold rounded px-2 py-1 text-lg"
             onclick={() => {
@@ -67,8 +78,20 @@
         >
             Logout
         </button>
+        <button
+            class="w-40 bg-blue-200 text-blue-900 hover:bg-blue-500 font-bold rounded px-2 py-1 text-lg"
+            onclick={() => goto('/changepw')}>
+            Passwort ändern
+        </button>
+        <button
+            class="w-40 bg-blue-200 text-blue-900 hover:bg-blue-500 font-bold rounded px-2 py-1 text-lg"
+            onclick={() => goto('/delete')}>
+            Konto löschen
+        </button>
+        </div>
+        {/if}
     </div>
-        <div class="text-center text-4xl font-bold text-white py-4">
+        <div class="text-center text-4xl font-bold text-white py-8">
             <span class="text-blue-900"><h1>Bahnenzähler</h1></span>
         </div>
         <div class="text-l font-bold text-white py-4">
