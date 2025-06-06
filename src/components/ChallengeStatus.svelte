@@ -13,11 +13,9 @@
     let currentDistance = $derived(bahnenSum * 50/1000);
     let progressPercentage = $derived((currentDistance / challengeLength) * 100);
 
-    $inspect("swimData", swimData);
-
 </script>
 
-<div class="w-full bg-blue-400 overflow-hidden h-30 relative rounded-lg text-blue-900 p-2">
+<div class="w-full bg-blue-400 overflow-hidden h-30 relative rounded-lg text-blue-900">
         <div>
         <div
             class="absolute top-13.5 bottom-0 bg-blue-300 h-3"
@@ -28,8 +26,8 @@
             style="width: {Math.min(progressPercentage, 100)}%;"
         ></div>
         <div
-            class="absolute top-10 bottom-0 bg-black h-10 w-3"
-            style="left: {Math.min(progressPercentage, 100)}%;"
+            class="absolute right-0 top-10 bottom-0 bg-black h-10 w-3"
+            style="right: {Math.max(100-progressPercentage, 0)}%;"
         ></div>
         <span class="absolute top-0 left-2 ">
             {challengeOrigin}

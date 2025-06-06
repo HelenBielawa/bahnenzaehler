@@ -93,13 +93,13 @@
     }
 
     async function handleDelete() {
-        let body = new FormData();
-        body.append('id', data.userID?.toString() || '0');
         try {
             const response = await fetch(
-                `https://www.schlossbad-erwitte.de/apps/bahnen/php/deleteUser.php?`, {
-                method: 'POST',
-                body: body
+                `https://www.schlossbad-erwitte.de/apps/bahnen/php/deleteUser.php?id=${data.userID?.toString() || ''}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
             });
 
             if (!response.ok) {
